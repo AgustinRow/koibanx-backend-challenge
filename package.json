@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "run": "node $NODE_DEBUG_OPTION app.js"
+    "run": "node $NODE_DEBUG_OPTION app.js",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",

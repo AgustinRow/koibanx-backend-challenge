@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      target: user
+    image: backend-dev
+    environment:
+      - tail
+      - -f
+      - /dev/null
+    command:
+      - npm
+      - run
+      - start
+    volumes:
+      - .:/app
+    restart: on-failure
+    ports:
+      - 3000:3000
+  db:
+    image: mongo:5.0.6
+    restart: on-failure
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass
+    volumes:
+      - db:/data/db
+    ports:
+      - 27017:27017
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rootpass
+      ME_CONFIG_MONGODB_URL: mongodb://root:rootpass@db:27017/
+volumes:
+  db: {}

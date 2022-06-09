@@ -6,6 +6,7 @@ module.exports = {
     'host': process.env.DATABASE_HOST,
     'port': process.env.DATABASE_PORT,
     'dbname': process.env.DATABASE_DBNAME,
-    'address': process.env.DATABASE_HOST + ':' + process.env.DATABASE_PORT
+    'address': process.env.DATABASE_HOST + ':' + process.env.DATABASE_PORT,
+    'url': process.env.MONGODB_URL
   },
 };

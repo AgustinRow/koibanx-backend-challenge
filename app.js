@@ -1,19 +1,31 @@
-const mongoose = require('mongoose');
-const logger = require('./utils/logger');
+const mongoose = require("mongoose");
+const logger = require("./utils/logger");
 mongoose.Promise = Promise;
 
-const express = require('express')
-const app = express()
-const dotenv = require('dotenv');
+const express = require("express");
+const app = express();
+const dotenv = require("dotenv");
 dotenv.config();
-const config = require('config');
-mongoose.connect('mongodb://' + config.get('mongodb.address') + '/' + config.get('mongodb.dbname'), { useNewUrlParser: true, useUnifiedTopology: true });
-require('./utils/initializer').init()
+const config = require("config");
 
-app.use('/api', require('./routes/stores'));
+require("./utils/initializer").init();
 
-// Start the server
-app.listen(config.get('port'));
-logger.info('API initialized on port ' + config.get('port'));
+app.use("/api", require("./routes/stores"));
 
-module.exports = app
+// Start the server and thhen connect to database
+app.listen(config.get("port"), async () => {
+  try {
+    await mongoose.connect(config.get("mongodb.url"), {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    if (mongoose.STATES[mongoose.connection.readyState] == "connected") {
+      logger.info("Database connected");
+    }
+  } catch (error) {
+    logger.info(error);
+  }
+});
+logger.info("API initialized on port " + config.get("port"));
+
+module.exports = app;

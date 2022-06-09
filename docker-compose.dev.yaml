@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      target: user
+    image: backend-dev
+    user: $USER_ID
+    environment:
+      - tail
+      - -f
+      - /dev/null
+    command:
+      
+    volumes:
+      - .:/app
+volumes:
+  npm-cache:
