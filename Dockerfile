@@ -10,4 +10,4 @@ FROM user as app
 COPY --chown=node . .
 RUN npm install && npm run build
 
-CMD [ "node", "dist/app.js" ]
+CMD [ "node", "app.js" ]

@@ -5,14 +5,10 @@ services:
       context: .
       target: user
     image: backend-dev
-    environment:
-      - tail
-      - -f
-      - /dev/null
     command:
       - npm
       - run
-      - start
+      - dev
     volumes:
       - .:/app
     restart: on-failure
@@ -39,3 +35,4 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:rootpass@db:27017/
 volumes:
   db: {}
+  npm-cache:

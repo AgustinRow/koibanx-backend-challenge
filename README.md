@@ -1,0 +1,1 @@
+To be aware of: https://www.npmjs.com/package/bcrypt-nodejs is deprecated and it is no longer maintained.
