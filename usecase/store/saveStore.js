@@ -9,7 +9,7 @@ const saveStoreInstance =
     if (storeAlreadyExist) {
       return false;
     } else {
-      await storeModel.create({ store });
+      await storeModel.create(store);
       return true;
     }
   };
