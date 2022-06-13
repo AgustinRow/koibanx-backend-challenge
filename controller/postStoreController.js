@@ -1,5 +1,5 @@
 const logger = require('../utils/logger');
-const saveStore = require('../usecase/store/');
+const { saveStore } = require('../usecase/store/');
 
 const postStoreController = async (req, res) => {
   try {
