@@ -20,22 +20,22 @@ const isUserRegistered = async ({ username, password }) => {
   }
 };
 
-const authError = (res, next) => {
-  res.status(401).json({ error: 'Invalid credentials' });
-};
-
 const authenticate = async (req, res, next) => {
   try {
     const authorization = req.headers.authorization;
-    if (!authorization) return authError(res, next);
-    const { username, password } = getCredentials(authorization);
-    const isRegistered = await isUserRegistered({ username, password });
-    if (!isRegistered) return authError(res, next);
-    req['user'] = username;
-    next();
+    if (!authorization) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    } else {
+      const { username, password } = getCredentials(authorization);
+      const isRegistered = await isUserRegistered({ username, password });
+      if (!isRegistered) {
+        return res.status(401).json({ error: 'Invalid Username or Password' });
+      }
+      req['user'] = username;
+      next();
+    }
   } catch (error) {
-    logger.info(error);
-    authError(res, next);
+    res.status(500).json({ error: error.message });
   }
 };
 
