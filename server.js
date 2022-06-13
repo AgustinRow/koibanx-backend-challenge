@@ -7,6 +7,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 const config = require('config');
+const { port } = require('config');
 
 require('./utils/initializer').init();
 
@@ -20,16 +21,11 @@ const build = () => app;
 const start = async ({ db }) => {
   app.listen(config.get('port'), async () => {
     try {
-      logger.info(config.get('mongodb.url'));
       await db.connect();
-      /*  await mongoose.connect('mongodb://root:rootpass@db:27017/', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }); */
       if (mongoose.STATES[mongoose.connection.readyState] == 'connected') {
         logger.info('Database connected');
       }
-      logger.info('API initialized on port ' + config.get('port'));
+      logger.info('API initialized on port ' + port);
     } catch (error) {
       logger.info(error);
     }
