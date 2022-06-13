@@ -8,8 +8,9 @@ services:
     environment:
       - MONGODB_URL=mongodb://root:rootpass@db:27017/
     command:
-      - node
-      - app.js
+      - npm
+      - run
+      - dev
     volumes:
       - .:/app
     ports:
