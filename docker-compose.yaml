@@ -5,15 +5,15 @@ services:
       context: .
       target: user
     image: backend-dev
+    environment:
+      - MONGODB_URL=mongodb://root:rootpass@db:27017/
     command:
-      - npm
-      - run
-      - dev
+      - node
+      - app.js
     volumes:
       - .:/app
-    restart: on-failure
     ports:
-      - 3000:3000
+      - 3300:3300
   db:
     image: mongo:5.0.6
     restart: on-failure
