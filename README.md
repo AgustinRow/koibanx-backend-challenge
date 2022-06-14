@@ -44,7 +44,7 @@ npm run seed
 
 ## Test
 
-For execute all the test,
+For execute the test suit,
 
 ```
 npm run test
@@ -59,4 +59,4 @@ Unit tests and end-to-end tests are all in the `/test` folder
 
 ## Considerations
 
-- 
+-
