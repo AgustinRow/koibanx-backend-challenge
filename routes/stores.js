@@ -3,13 +3,15 @@ const express = require('express');
 const authenticate = require('../utils/auth');
 const Validator = require('../utils/Validator');
 const router = express.Router();
-const postStoreController = require('../controller/postStoreController');
-const getStoresController = require('../controller/getStoresController');
-const decorateStore= require('./decorateStore')
+const {
+  postStoreControllerInstance,
+  getStoresControllerInstance,
+} = require('../controller/stores/');
+const decorateStore = require('./decorateStore');
 
 router
   .route('/stores')
-  .get(authenticate, decorateStore(getStoresController))
-  .post(authenticate, Validator('storesSchema'), postStoreController);
+  .get(authenticate, decorateStore(getStoresControllerInstance))
+  .post(authenticate, Validator('storesSchema'), postStoreControllerInstance);
 
 module.exports = router;

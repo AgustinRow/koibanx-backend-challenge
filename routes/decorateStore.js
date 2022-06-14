@@ -5,14 +5,13 @@ const decorateStore = (getStoreController) => {
     try {
       const { q } = req.query;
       const pagination = JSON.parse(q);
-      console.log(pagination);
       const page = pagination.page || 1;
-      const limit = { limit: 10 };
+      const limit = pagination.limit || 10;
       const stores = await getStoreController({ page, limit });
       res.status(200).json(stores);
     } catch (error) {
       logger.error(error);
-      res.status(401);
+      res.status(400).json({ error: 'bad request' });
     }
   };
 };

@@ -4,9 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "run": "node $NODE_DEBUG_OPTION server.js",
     "dev": "nodemon app.js",
-    "test": "export NODE_ENV=test && mocha test/**.test.js --exit --timeout 10000"
+    "test": "export NODE_ENV=test && mocha test/**.test.js --exit --timeout 10000",
+    "seed": "export NODE_ENV=test && node seeder/seedStores.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,18 +17,20 @@
     "axios": "^0.21.0",
     "bcrypt-nodejs": "0.0.3",
     "config": "^3.3.6",
+    "dayjs": "^1.11.3",
     "dotenv": "^10.0.0",
     "express": "~4.17.1",
     "express-validator": "^6.12.0",
-    "fakerator": "^0.3.5",
     "joi": "^17.6.0",
     "logger": "0.0.1",
     "mongoose": "^5.13.2",
     "mongoose-aggregate-paginate-v2": "^1.0.6",
-    "supertest": "^6.2.3",
+    "mongoose-seed": "^0.6.0",
     "winston": "~2.4.0"
   },
   "devDependencies": {
+    "fakerator": "^0.3.5",
+    "supertest": "^6.2.3",
     "chai": "^4.3.6",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.5.0",
