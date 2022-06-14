@@ -2,6 +2,7 @@ const chai = require('chai');
 const { expect } = chai;
 const saveStore = require('./../usecase/store/saveStore');
 
+
 const fakePayload = {
   name: 'Energia',
   cuit: '20-36683050-3',
@@ -48,20 +49,5 @@ describe('saveStore usecase', () => {
       },
     })({ store: fakePayload });
     expect(saveStoreResult).to.be.false;
-  });
-  it.skip('should throw an error when mongoose scheme is not valid', async () => {
-    const saveStoreResult = await saveStore({
-      storeModel: {
-        findOne: () => null,
-        create: () => Promise.reject(),
-      },
-    })({ store: fakePayload });
-    const result = await saveStore({
-      storeModel: {
-        findOne: () => null,
-        create: () => Promise.reject('error'),
-      },
-    })(fakePayload);
-    expect(result).to.throw;
   });
 });

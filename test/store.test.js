@@ -8,6 +8,13 @@ const storeModel = require('../models/store');
 const { deleteUsers, deleteStores } = require('../utils/cleanDb');
 const mongoose = require('mongoose');
 mongoose.Promise = Promise;
+
+const dayjs = require('dayjs');
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+});
 const app = build();
 
 const request = supertest(app);
@@ -41,22 +48,25 @@ describe('GET /api/stores', () => {
     expect(status).to.be.equal(401);
   });
 
-  it.skip('should return status 200 and valid payload when user is authenticated', async () => {
+  it('should return status 200 and valid payload when user is authenticated', async () => {
     await userModel.create({
-      username: 'user@test.com:123',
-      password: 'base64',
+      username: 'user@test.com',
+      password: '123',
     });
 
-    await storeModel.create({ fakeStore });
+    const store = await storeModel.create(fakeStore);
     const { status, body } = await request
-      .get('/api/stores')
+      .get('/api/stores?q={"page":1, "limit": 2}')
       .set('Authorization', `Basic ${fakeBase64User}`);
-    expect(status).to.be(200);
-    expect(body).to.be.deep.equal(fakeStore);
-    expect(body).to.have.property('name');
-    expect(body).to.have.property('cuit');
-    expect(body).to.have.property('concepts');
-    expect(body).to.have.property('lastSale');
+    expect(status).to.be.equal(200);
+    expect(body.data[0]).to.include({
+      _id: store._id.toString(),
+      comercio: store.name,
+      cuit: store.cuit,
+      'balance actual': formatter.format(store.currentBalance),
+      'ultima venta': dayjs(store.lastSale).format('DD/MM/YYYY'),
+    });
+    expect(body).to.include({ page: 1, limit: 2, pages: 1, total: 1 });
   });
 });
 
