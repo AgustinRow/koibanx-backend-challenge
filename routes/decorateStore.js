@@ -10,7 +10,6 @@ const decorateStore = (getStoreController) => {
       const stores = await getStoreController({ page, limit });
       res.status(200).json(stores);
     } catch (error) {
-      logger.error(error);
       res.status(400).json({ error: 'bad request' });
     }
   };

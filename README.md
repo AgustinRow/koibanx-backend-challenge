@@ -56,6 +56,7 @@ Unit tests and end-to-end tests are all in the `/test` folder
 
 - stores could not be duplicated, so cuit number was taken as an unique identifier
 - user password given in the documentation (`password: test123`) is not the same as it was initialized in the project (`password: admin`). So if someone want to make some test with that user it should check to have the right credentials.
+- GET stores: url must have the complete query with the [given format](https://restdb.io/docs/querying-with-the-api#restdb)
 
 ## Considerations
 
