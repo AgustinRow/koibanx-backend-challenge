@@ -6,8 +6,6 @@ const { db } = services();
 const userModel = require('../models/user');
 const storeModel = require('../models/store');
 const { deleteUsers, deleteStores } = require('../utils/cleanDb');
-const mongoose = require('mongoose');
-mongoose.Promise = Promise;
 
 const dayjs = require('dayjs');
 const formatter = new Intl.NumberFormat('en-US', {
@@ -43,7 +41,7 @@ describe('GET /api/stores', () => {
     expect(status).to.be.equal(401);
   });
 
-  it('should return status 401 when not sending authorization data in header', async () => {
+  it('should return status 401 when not sending authentication data in header', async () => {
     const { status, body } = await request.get('/api/stores');
     expect(status).to.be.equal(401);
   });
@@ -68,12 +66,55 @@ describe('GET /api/stores', () => {
     });
     expect(body).to.include({ page: 1, limit: 2, pages: 1, total: 1 });
   });
+  it('should return status 400-bad request when not sending a valid page in url', async () => {
+    await userModel.create({
+      username: 'user@test.com',
+      password: '123',
+    });
+    const { status, body } = await request
+      .get('/api/stores?q={"page":a, "limit": 2}')
+      .set('Authorization', `Basic ${fakeBase64User}`);
+    expect(status).to.be.equal(400);
+    expect(body.error).to.be.equal('bad request');
+  });
+  it('should return status 400-bad request when not sending a valid limit in url', async () => {
+    await userModel.create({
+      username: 'user@test.com',
+      password: '123',
+    });
+    const { status, body } = await request
+      .get('/api/stores?q={"page":1, "limit": a}')
+      .set('Authorization', `Basic ${fakeBase64User}`);
+    expect(status).to.be.equal(400);
+    expect(body.error).to.be.equal('bad request');
+  });
+  it('should return status 400-bad request when url parameters are not valids', async () => {
+    await userModel.create({
+      username: 'user@test.com',
+      password: '123',
+    });
+    const { status, body } = await request
+      .get('/api/stores?q={"pa":a, "limi}')
+      .set('Authorization', `Basic ${fakeBase64User}`);
+    expect(status).to.be.equal(400);
+    expect(body.error).to.be.equal('bad request');
+  });
+  it('should return status 400-bad request when is not sending the full url', async () => {
+    await userModel.create({
+      username: 'user@test.com',
+      password: '123',
+    });
+    const { status, body } = await request
+      .get('/api/stores')
+      .set('Authorization', `Basic ${fakeBase64User}`);
+    expect(status).to.be.equal(400);
+    expect(body.error).to.be.equal('bad request');
+  });
 });
 
 describe('POST /api/stores', () => {
   before(async () => {
     await db.connect();
-    console.log(mongoose.STATES[mongoose.connection.readyState]);
   });
   beforeEach(async () => {
     await deleteUsers();
